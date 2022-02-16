@@ -92,3 +92,4 @@ workflows:
   sample: 
     jobs:
       - build-and-test
+      - validate-message
