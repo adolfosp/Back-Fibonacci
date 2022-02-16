@@ -19,17 +19,7 @@ jobs:
           name: Build
           command: yarn commitlint-circle
 
-  build-and-test:
-    docker:
-      - image: mcr.microsoft.com/dotnet/sdk:5.0
-    steps:
-      - checkout
-      - run: dotnet restore
-      - run: dotnet build
-      - run: dotnet run
-
 workflows:
   sample: 
     jobs:
-      - build-and-test
       - build
