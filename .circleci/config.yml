@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build-commit:
+  build:
     docker:
       - image: circleci/node:8
     steps:
@@ -31,5 +31,5 @@ jobs:
 workflows:
   sample: 
     jobs:
-      - build-commit
       - build-and-test
+      - build
