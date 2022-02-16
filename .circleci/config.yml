@@ -10,6 +10,7 @@ jobs:
       - run: dotnet build
       - run: dotnet run
 
+
   build:
     docker:
       - image: circleci/node:8
