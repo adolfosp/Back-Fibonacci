@@ -1,0 +1,11 @@
+{
+  "name": "Back-Fibonacci",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/adolfosp/Back-Fibonacci.git",
+  "author": "Adolfo <adolfododo@hotmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "commitlint-circle": "^1.0.0"
+  }
+}

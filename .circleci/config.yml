@@ -5,11 +5,15 @@ jobs:
       - image: circleci/node:8
     steps:
       - checkout
-     
+      - restore_cache:
+          key: deps-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies
           command: yarn install --frozen-lockfile
-      
+      - save_cache:
+          key: deps-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
       - run:
           name: Build
           command: yarn build
