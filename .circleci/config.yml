@@ -1,7 +1,5 @@
 version: 2.1
 
-orbs: 
-  git_commit-message-validator: orbss/git_commit-message-validator@0.1.0
 
 jobs:
   build-and-test:
@@ -13,86 +11,18 @@ jobs:
       - run: dotnet build
       - run: dotnet run
 
-  validate-message:
-    parameters:
-      pattern:
-        description: "Regex pattern"
-        type: string
-        default: ""
-
-      error_message:
-        description: "The message displayed when message validation is failed"
-        type: string
-        default: "Invalid commit message"
-
-    executor:
-      name: circleci-node-latest
-
-    working_directory: /tmp/git_commit-message-validator
-
+  commitlint:
+    docker:
+      - image: williamlauze/circleci-commitlint:latest
+    working_directory: /www
     steps:
       - checkout
-      - validate:
-          pattern: <<parameters.pattern>>
-          error_message: <<parameters.error_message>>
-
-commands:
-  validate:
-    parameters:
-      pattern:
-        description: "Regex pattern"
-        type: string
-        default: ""
-
-      error_message:
-        description: "The message displayed when message validation is failed"
-        type: string
-        default: "Invalid commit message"
-
-    steps:
-      - when:
-          condition: <<parameters.pattern>>
-          steps:
-            - run:
-                name: Get commit message
-                command: |
-                  echo 'export COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")' >> $BASH_ENV
-                  source $BASH_ENV
-
-            - run:
-                name: Create message validator
-                command: |
-                  echo "var commit_message = \"$COMMIT_MESSAGE\";" > orbs_git_commit-message-validator.js
-                  echo "var pattern = \"<<parameters.pattern>>\";" >> orbs_git_commit-message-validator.js
-
-                  echo "if (commit_message.match(pattern)) {" >> orbs_git_commit-message-validator.js
-                  echo "  console.log(\"commit message is in valid format\");" >> orbs_git_commit-message-validator.js
-                  echo "  return true;" >> orbs_git_commit-message-validator.js
-                  echo "} else {" >> orbs_git_commit-message-validator.js
-                  echo "  console.log(\"<<parameters.error_message>>\");" >> orbs_git_commit-message-validator.js
-                  echo "  throw \"<<parameters.error_message>>\";" >> orbs_git_commit-message-validator.js
-                  echo "};" >> orbs_git_commit-message-validator.js
-
-            - run:
-                name: Validate commit messages
-                command: |
-                  node orbs_git_commit-message-validator.js
-
-      - unless:
-          condition: <<parameters.pattern>>
-          steps:
-            - run:
-                name: Show error msg and return false
-                command: |
-                  echo "Error: No regex pattern supplied. exit 1."
-                  exit 1
-executors:
-  circleci-node-latest:
-    docker:
-      - image: circleci/node:10
-
+      - run:
+          name: Lint commit messages
+          command: |
+            /bin/sh /.scripts/commitlint_range.sh
 workflows:
   sample: 
     jobs:
       - build-and-test
-      - validate-message
+      - commitlint
