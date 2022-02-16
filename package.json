@@ -5,6 +5,10 @@
   "repository": "https://github.com/adolfosp/Back-Fibonacci.git",
   "author": "Adolfo <adolfododo@hotmail.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "commitmsg": "commitlint -E GIT_PARAMS"
+  },
   "dependencies": {
     "commitlint-circle": "^1.0.0"
   }
