@@ -18,8 +18,3 @@ jobs:
       - run:
           name: Build
           command: yarn commitlint-circle
-
-workflows:
-  sample: 
-    jobs:
-      - build
