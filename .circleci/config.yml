@@ -18,7 +18,7 @@ jobs:
           name: Build
           command: yarn commitlint-circle
 
-    build-and-test:
+  build-and-test:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:5.0
     steps:
