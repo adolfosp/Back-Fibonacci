@@ -1,6 +1,15 @@
 version: 2.1
 
 jobs:
+  build-and-test:
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:5.0
+    steps:
+      - checkout
+      - run: dotnet restore
+      - run: dotnet build
+      - run: dotnet run
+
   build:
     docker:
       - image: circleci/node:8
@@ -18,3 +27,9 @@ jobs:
       - run:
           name: Build
           command: yarn commitlint-circle
+
+workflows:
+  sample: 
+    jobs:
+      - build
+      - build-and-test
