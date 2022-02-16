@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs: 
+  git_commit-message-validator: orbss/git_commit-message-validator@0.1.0
+
 jobs:
   build-and-test:
     docker:
