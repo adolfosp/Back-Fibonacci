@@ -1,28 +1,46 @@
-version: 2.1
-
+version: 2
+defaults:
+  working_directory: ~/project
+  docker:
+  - image: circleci/node:latest
 
 jobs:
-  build-and-test:
-    docker:
-      - image: mcr.microsoft.com/dotnet/sdk:5.0
+  setup:
+    <<: *defaults
     steps:
-      - checkout
-      - run: dotnet restore
-      - run: dotnet build
-      - run: dotnet run
+    - checkout
+    - restore_cache:
+        key: lock-{{ checksum "package-lock.json" }}
+    - run:
+        name: Install dependencies
+        command: npm install
+    - save_cache:
+        key: lock-{{ checksum "package-lock.json" }}
+        paths:
+        - node_modules
+    - persist_to_workspace:
+        root: ~/project
+        paths:
+        - node_modules
 
-  commitlint:
-    docker:
-      - image: williamlauze/circleci-commitlint:latest
-    working_directory: /www
+  lint_commit_message:
+    <<: *defaults
     steps:
-      - checkout
-      - run:
-          name: Lint commit messages
-          command: |
-            /bin/sh /.scripts/commitlint_range.sh
+    - checkout
+    - attach_workspace:
+        at: ~/project
+    - run:
+        name: Define environment variable with lastest commit's message
+        command: |
+          echo 'export COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")' >> $BASH_ENV
+          source $BASH_ENV
+    - run:
+        name: Lint commit message
+        command: echo "$COMMIT_MESSAGE" | npx commitlint
+
 workflows:
-  sample: 
+  version: 2
+  commit:
     jobs:
-      - build-and-test
-      - commitlint
+    - setup
+    - lint_commit_message: { requires: [setup] }
