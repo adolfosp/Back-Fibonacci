@@ -17,6 +17,4 @@ jobs:
       - run:
           name: Build
           command: yarn commitlint-circle
-      - run:
-          name: Lint commits
-          command: ./src/cli.js
+     
