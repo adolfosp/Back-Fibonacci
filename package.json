@@ -10,6 +10,7 @@
     "commitmsg": "commitlint -E GIT_PARAMS"
   },
   "dependencies": {
-    "commitlint-circle": "^1.0.0"
+    "commitlint-circle": "^1.0.0",
+    "typescript": "^4.5.5"
   }
 }
