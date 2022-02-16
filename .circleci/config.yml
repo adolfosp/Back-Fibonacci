@@ -9,14 +9,14 @@ jobs:
           key: deps-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies
-          command: yarn install --frozen-lockfile
+          command: yarn install @timbeyer/commitlint-circle --dev
       - save_cache:
           key: deps-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
       - run:
           name: Build
-          command: yarn build
+          command: yarn commitlint-circle
       - run:
           name: Lint commits
           command: ./src/cli.js
