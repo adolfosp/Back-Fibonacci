@@ -2,6 +2,7 @@ version: 2.1
 
 jobs:
   build-and-test:
+    working_directory: ~/repo
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:5.0
     steps:
@@ -25,6 +26,9 @@ jobs:
           key: deps-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
       - run:
           name: Build
           command: yarn commitlint-circle
@@ -49,3 +53,4 @@ workflows:
     jobs:
       - build
       - build-and-test
+      - deploy
