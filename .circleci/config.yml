@@ -32,7 +32,9 @@ jobs:
           name: release
           command: yarn run semantic-release || true
 
-  deploy:
+  deployss:
+    docker:
+      - image: circleci/node:latest
     steps:
       - run:
           name: Set registry URL
