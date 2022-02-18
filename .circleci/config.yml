@@ -13,7 +13,7 @@ jobs:
 
   build:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:latest
     steps:
       - checkout
       - restore_cache:
@@ -28,6 +28,9 @@ jobs:
       - run:
           name: Build
           command: yarn commitlint-circle
+      - run:
+        name: release
+        command: npm run semantic-release || true
 
 workflows:
   sample: 
