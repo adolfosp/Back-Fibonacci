@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 jobs:
   build-and-test:
@@ -32,7 +32,6 @@ jobs:
           name: release
           command: yarn run semantic-release || true
   deploy:
-    <<: *defaults
     steps:
       - attach_workspace:
           at: ~/repo
