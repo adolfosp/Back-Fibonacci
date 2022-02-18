@@ -30,7 +30,7 @@ jobs:
           command: yarn commitlint-circle
       - run:
         name: release
-        command: npm run semantic-release || true
+        command: yarn run semantic-release || true
 
 workflows:
   sample: 
