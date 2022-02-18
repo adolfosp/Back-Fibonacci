@@ -31,7 +31,20 @@ jobs:
       - run:
           name: release
           command: yarn run semantic-release || true
-
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Set registry URL
+          command: npm set registry https://packagecloud.io/adolfosp/teste
+      - run:
+          name: Authenticate with registry
+          command: echo "//packagecloud.io/adolfosp/teste/:_authToken=$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" > ~/repo/.npmrc
+      - run:
+          name: Publish package
+          command: npm publish
 workflows:
   sample: 
     jobs:
