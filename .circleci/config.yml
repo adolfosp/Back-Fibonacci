@@ -41,7 +41,7 @@ jobs:
           command: npm set registry https://packagecloud.io/adolfosp/teste
       - run:
           name: Authenticate with registry
-          command: echo "//packagecloud.io/adolfosp/teste/:_authToken=$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" > ~/repo/.npmrc
+          command: echo "//packagecloud.io/adolfosp/teste/:_authToken=$PACKAGECLOUD_TOKEN" > ~/repo/.npmrc
       - run:
           name: Publish package
           command: npm publish
