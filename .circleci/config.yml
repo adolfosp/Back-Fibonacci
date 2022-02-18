@@ -29,8 +29,8 @@ jobs:
           name: Build
           command: yarn commitlint-circle
       - run:
-        name: release
-        command: yarn run semantic-release || true
+          name: release
+          command: yarn run semantic-release || true
 
 workflows:
   sample: 
