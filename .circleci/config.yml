@@ -36,12 +36,14 @@ jobs:
     docker:
       - image: circleci/node:latest
     steps:
+      - attach_workspace:
+          at: ~/repo
       - run:
           name: Set registry URL
           command: npm set registry https://packagecloud.io/adolfosp/teste/npm
       - run:
           name: Authenticate with registry
-          command: echo "//packagecloud.io/adolfosp/teste/npm:_authToken=$PACKAGECLOUD_TOKEN" > ~/repo/.npmrc
+          command: echo "//packagecloud.io/adolfosp/teste/npm/:_authToken=$PACKAGECLOUD_TOKEN" > ~/repo/.npmrc
       - run:
           name: Publish package
           command: npm publish
