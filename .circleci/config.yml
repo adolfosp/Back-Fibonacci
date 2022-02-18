@@ -2,7 +2,6 @@ version: 2.1
 
 jobs:
   build-and-test:
-    working_directory: ~/repo
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:5.0
     steps:
@@ -26,9 +25,6 @@ jobs:
           key: deps-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
-      - persist_to_workspace:
-          root: ~/repo
-          paths: .
       - run:
           name: Build
           command: yarn commitlint-circle
@@ -36,23 +32,8 @@ jobs:
           name: release
           command: yarn run semantic-release || true
 
-  deploy:
-    steps:
-      - attach_workspace:
-          at: ~/repo
-      - run:
-          name: Set registry URL
-          command: npm set registry https://packagecloud.io/adolfosp/teste
-      - run:
-          name: Authenticate with registry
-          command: echo "//packagecloud.io/adolfosp/teste/:_authToken=$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" > ~/repo/.npmrc
-      - run:
-          name: Publish package
-          command: npm publish
-          
 workflows:
   sample: 
     jobs:
       - build
       - build-and-test
-      - deploy
