@@ -35,6 +35,7 @@ jobs:
       - run:
           name: release
           command: yarn run semantic-release || true
+
   deploy:
     steps:
       - attach_workspace:
@@ -48,6 +49,7 @@ jobs:
       - run:
           name: Publish package
           command: npm publish
+          
 workflows:
   sample: 
     jobs:
