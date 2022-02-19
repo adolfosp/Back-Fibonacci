@@ -38,6 +38,7 @@ jobs:
       - run:
           name: Publish package
           command: npm publish --acess=public
+          
 workflows:
   sample: 
     jobs:
